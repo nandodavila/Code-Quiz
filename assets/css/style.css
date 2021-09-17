@@ -9,3 +9,7 @@ section {
 aside {
     border: 2px solid red;
 }
+
+li {
+    border: 2px solid green;
+}
