@@ -15,18 +15,36 @@ answerChoices.appendChild(li4)
 
 var timer;
 var timerCount;
+var answeredQuestions = [];
 
-var questions = ["What is an array??", "Which is a semantic HTML element?", "Where should you link a stylesheet?",
-"What is a 'Boolean'?", "What is a string??"];
+var questions = [
+  {
+    question: "What is an array??",
+    correctAnswer: "An ordered list of values",
+    choices: ["A type of ray gun", "a true or false statement", "a bit of text", "An ordered list of values" ],
+  },
+  {
+    question: "Which is a semantic HTML element?",
+    correctAnswer: "Header",
+    choices: ["div", "meta", "var", "Header"],
+  },
+  {
+    question: "What is an array??",
+    correctAnswer: "Head tag",
+    choices: ["The footer", "The main tag", "The body tag", "Head tag"],
+  },
+  {
+    question: "What is an array??",
+    correctAnswer: "An ordered list of values",
+    choices: ["A type of ray gun", "a true or false statement", "a bit of text", "An ordered list of values" ],
+  },
+  {
+    question: "What is an array??",
+    correctAnswer: "An ordered list of values",
+    choices: ["A type of ray gun", "a true or false statement", "a bit of text", "An ordered list of values" ],
+  }
+]
 
-var wrongAnswers1 = ["A type of ray gun", "a true or false statement", "a bit of text"];
-var wrongAnswers2 = ["div", "meta", "var"];
-var wrongAnswers3 = ["The footer", "The main tag", "The body tag"];
-var wrongAnswers4 = ["A bunch of numbers", "A bunch of letters", "an ordered list to store values"];
-var wrongAnswers5 = ["A true or false statement", "Numbers", "Everything in the body tag"];
-var rightAnswers = ["An ordered list of values", "Header", "Head tag", "A value thats true or false", 
-"A squence of characters in a var"];
-var randomQuestion = ""
 
 function startTimer() {
   timerCount = 50;
@@ -49,12 +67,21 @@ function startTimer() {
 
 startBtn.addEventListener("click", function() {
   startTimer();
-  displayAnswers();
+  startBtn.setAttribute("style", "display: none")
+  displayQuestions();
+
 });
 
 function displayQuestions () {
-  randomQuestion = questions[Math.floor(Math.random() * questions.length)];
-  questionsTxt.textContent = randomQuestion
+  var questionAnswered = true
+  while(questionAnswered) {
+    randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+    if (answeredQuestions[randomQuestion.question]) {
+      questionAnswered = true 
+    } else questionAnswered = false;
+  }
+
+  questionsTxt.textContent = randomQuestion.question
 }
 
 function displayAnswers () {
@@ -130,6 +157,7 @@ function li2Click() {
     answerChoices.textContent = "Correct!"
   } else {
     answerChoices.textContent = "WRONG!!"
+    
   }
 });
 };
