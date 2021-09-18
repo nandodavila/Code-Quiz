@@ -22,7 +22,6 @@ var questions = [
     choices: ["<div>", "<meta>", "<var>", "<header>"],
   },
   {
-    // fix questions and answer
     question: "Where should you link a stylesheet?",
     correctAnswer: "Head tag",
     choices: ["The footer", "The main tag", "The body tag", "Head tag"],
