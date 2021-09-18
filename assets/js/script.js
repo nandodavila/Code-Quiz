@@ -1,16 +1,9 @@
 var questionsTxt = document.querySelector(".questions");
 var startBtn = document.querySelector(".start-button");
-var answerChoices = document.querySelector(".random-answers");
+var nxtBtn = document.querySelector(".next-button");
+var answerChoices = document.querySelectorAll(".answer-choice");
 var timerElement = document.querySelector(".timer-count");
 var highscore = document.querySelector(".highscore");
-var li1 = document.createElement("li");
-var li2 = document.createElement("li");
-var li3 = document.createElement("li");
-var li4 = document.createElement("li");
-answerChoices.appendChild(li1)
-answerChoices.appendChild(li2)
-answerChoices.appendChild(li3)
-answerChoices.appendChild(li4)
 
 
 var timer;
@@ -25,27 +18,28 @@ var questions = [
   },
   {
     question: "Which is a semantic HTML element?",
-    correctAnswer: "Header",
-    choices: ["div", "meta", "var", "Header"],
+    correctAnswer: "<header>",
+    choices: ["<div>", "<meta>", "<var>", "<header>"],
   },
   {
-    question: "What is an array??",
+    // fix questions and answer
+    question: "Where should you link a stylesheet?",
     correctAnswer: "Head tag",
     choices: ["The footer", "The main tag", "The body tag", "Head tag"],
   },
   {
-    question: "What is an array??",
-    correctAnswer: "An ordered list of values",
-    choices: ["A type of ray gun", "a true or false statement", "a bit of text", "An ordered list of values" ],
+    question: "What is a 'Boolean'?",
+    correctAnswer: "A value thats true or false",
+    choices: ["A bunch of numbers", "A bunch of letters", "an ordered list to store values", "A value thats true or false" ],
   },
   {
-    question: "What is an array??",
-    correctAnswer: "An ordered list of values",
-    choices: ["A type of ray gun", "a true or false statement", "a bit of text", "An ordered list of values" ],
+    question: "What is a string??",
+    correctAnswer: "A squence of characters in a var",
+    choices: ["A true or false statement", "Numbers", "Everything in the body tag", "A squence of characters in a var" ],
   }
 ]
 
-
+//timer count
 function startTimer() {
   timerCount = 50;
     timer = setInterval(function() {
@@ -64,16 +58,39 @@ function startTimer() {
       }
     }, 1000);
 }
+// checking if the answer is correct when next is pushed
+function checkQuestion() {
+  answeredQuestions.push(questionsTxt.textContent)
+  if (nxtBtn.dataset.isAnswerCorrect === "false") {
+    console.log("question wrong");
+    timerCount = timerCount -10;
 
+  }
+
+}
+//start button event 
 startBtn.addEventListener("click", function() {
   startTimer();
   startBtn.setAttribute("style", "display: none")
   displayQuestions();
 
 });
-
+// next button event
+nxtBtn.addEventListener("click", function(event) {
+  checkQuestion();
+  displayQuestions(); 
+  console.log(event)
+});
+// displays questions in a random order checking if questions have already been asked
 function displayQuestions () {
+  console.log(answeredQuestions.length)
+  console.log(questions.length)
+  if (answeredQuestions.length === questions.length) {
+    alert("Game Over");
+    return;
+  }
   var questionAnswered = true
+  
   while(questionAnswered) {
     randomQuestion = questions[Math.floor(Math.random() * questions.length)];
     if (answeredQuestions[randomQuestion.question]) {
@@ -82,102 +99,30 @@ function displayQuestions () {
   }
 
   questionsTxt.textContent = randomQuestion.question
+
+  for (i = 0; i < answerChoices.length; i++) {
+    answerChoices[i].textContent = randomQuestion.choices[i];
+    if (randomQuestion.choices[i] == randomQuestion.correctAnswer){
+      answerChoices[i].dataset.isAnswer = true;
+    } else answerChoices[i].dataset.isAnswer = false;
+  }
 }
 
-function displayAnswers () {
-  displayQuestions();
-  if (randomQuestion === questions[0]) {
-    li1.textContent = wrongAnswers1[0];
-    li1Click();
-    li2.textContent = wrongAnswers1[1];
-    li2Click();
-    li3.textContent = rightAnswers[0];
-    li3Click();
-    li4.textContent = wrongAnswers1[2]
-    li4Click();
-    console.log(rightAnswers[0])
-    console.log(li3.textContent)
-  }
-  if (randomQuestion === questions[1]) {
-    li1.textContent = wrongAnswers1[0];
-    li1Click();
-    li2.textContent = wrongAnswers1[1];
-    li2Click();
-    li3.textContent = rightAnswers[0];
-    li3Click();
-    li4.textContent = wrongAnswers1[2]
-    li4Click();
-  }
-  if (randomQuestion === questions[2]) {
-    li1.textContent = wrongAnswers1[0];
-    li1Click();
-    li2.textContent = wrongAnswers1[1];
-    li2Click();
-    li3.textContent = rightAnswers[0];
-    li3Click();
-    li4.textContent = wrongAnswers1[2]
-    li4Click();
-  }
-  if (randomQuestion === questions[3]) {
-    li1.textContent = wrongAnswers1[0];
-    li1Click();
-    li2.textContent = wrongAnswers1[1];
-    li2Click();
-    li3.textContent = rightAnswers[0];
-    li3Click();
-    li4.textContent = wrongAnswers1[2]
-    li4Click();
-  }
-  if (randomQuestion === questions[4]) {
-    li1.textContent = wrongAnswers1[0];
-    li1Click();
-    li2.textContent = wrongAnswers1[1];
-    li2Click();
-    li3.textContent = rightAnswers[0];
-    li3Click();
-    li4.textContent = wrongAnswers1[2]
-    li4Click();
-  }
-  return;
-}
-
-function li1Click () {
-  li1.addEventListener("click", function() {
-  if (li1 === rightAnswers[0]) {
-    answerChoices.textContent = "Correct!"
-  } else {
-    answerChoices.textContent = "WRONG!!"
-  }
-});
-};
-
-function li2Click() {
-  li2.addEventListener("click", function() {
-  if (li2 == rightAnswers[0]) {
-    answerChoices.textContent = "Correct!"
-  } else {
-    answerChoices.textContent = "WRONG!!"
+// adding event listener for all list items
+for (i = 0; i < answerChoices.length; i++) {
+  answerChoices[i].addEventListener("click", function(event) {
+  console.log(event.target.textContent);
+    console.log(event.target.dataset);
+    if (event.target.dataset.isAnswer === "true") {
+      nxtBtn.dataset.isAnswerCorrect = true;
+      //add bs later
+      console.log("correct answer");
+    } else {
+      nxtBtn.dataset.isAnswerCorrect = false;
+      console.log("Wrong Answer");
+    }
     
-  }
-});
-};
-
-function li3Click() {
-  li3.addEventListener("click", function() {
-  if (li3 == rightAnswers[0]) {
-    answerChoices.textContent = "Correct!"
-  } else {
-    answerChoices.textContent = "WRONG!!"
-  }
-});
-};
-
-function li4Click() {
-  li4.addEventListener("click", function() {
-  if (li4 == rightAnswers[0]) {
-    answerChoices.textContent = "Correct!"
-  } else {
-    answerChoices.textContent = "WRONG!!"
-  }
-});
-};
+    nxtBtn.hidden = false;
+    console.log(answeredQuestions)
+  }); 
+}
