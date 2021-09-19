@@ -2,12 +2,28 @@ body {
     background-color: cornsilk;
 }
 
+main {
+    display: flex;
+}
+
+
 header {
     border: 2px solid blue;
     text-align: center;
     background-color: rgb(179, 135, 135);
     padding: 2px;
     margin: 10px;
+}
+
+.highscore {
+    font-size: xx-large;
+    margin: 10px;
+}
+
+.timer-count {
+    text-align: center;
+    margin: 10px;
+    font-size: xx-large;
 }
 
 h1 { 
@@ -47,7 +63,9 @@ section {
 }
 
 aside {
+    background-color: cyan;
     border: 2px solid red;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 li {

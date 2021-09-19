@@ -4,6 +4,9 @@ var nxtBtn = document.querySelector(".next-button");
 var answerChoices = document.querySelectorAll(".answer-choice");
 var timerElement = document.querySelector(".timer-count");
 var highscore = document.querySelector(".highscore");
+var form = document.querySelector(".highschore-form");
+var formInput = document.querySelector("#initials")
+
 
 
 var timer;
@@ -19,22 +22,22 @@ var questions = [
   {
     question: "Which is a semantic HTML element?",
     correctAnswer: "<header>",
-    choices: ["<div>", "<meta>", "<var>", "<header>"],
+    choices: ["<div>", "<header>", "<meta>", "<var>", ],
   },
   {
     question: "Where should you link a stylesheet?",
     correctAnswer: "Head tag",
-    choices: ["The footer", "The main tag", "The body tag", "Head tag"],
+    choices: ["The footer", "Head tag", "The main tag", "The body tag", ],
   },
   {
     question: "What is a 'Boolean'?",
     correctAnswer: "A value thats true or false",
-    choices: ["A bunch of numbers", "A bunch of letters", "an ordered list to store values", "A value thats true or false" ],
+    choices: ["A value thats true or false", "A bunch of numbers", "A bunch of letters", "an ordered list to store values",  ],
   },
   {
     question: "What is a string??",
     correctAnswer: "A squence of characters in a var",
-    choices: ["A true or false statement", "Numbers", "Everything in the body tag", "A squence of characters in a var" ],
+    choices: ["A true or false statement", "Numbers", "A squence of characters in a var", "Everything in the body tag",  ],
   }
 ]
 
@@ -47,13 +50,12 @@ function startTimer() {
       timerElement.textContent = timerCount;
       if (timerCount >= 0) {
         if (timerCount > 0) {
-          //clearInterval(timer);
-         // winGame();
+          getInitials();
         }
       }
-      if (timerCount === 0) {
+      if (timerCount <= 0) {
         clearInterval(timer);
-        //loseGame();
+        loseGame();
       }
     }, 1000);
 }
@@ -105,6 +107,7 @@ function displayQuestions () {
       answerChoices[i].dataset.isAnswer = true;
     } else answerChoices[i].dataset.isAnswer = false;
   }
+  getInitials();
 }
 
 // adding event listener for all list items
@@ -124,4 +127,20 @@ for (i = 0; i < answerChoices.length; i++) {
     nxtBtn.hidden = false;
     console.log(answeredQuestions)
   }); 
+}
+
+function loseGame() {
+  alert("Failed, please try again");
+  count = 0;
+  startBtn.setAttribute("style", "display: inline")
+}
+
+function getInitials() {
+  if (count > 0) {
+    localStorage.setItem("count", count);
+  }  
+  form.hidden = false;
+  localStorage.setItem("recentHighscore", formInput)
+  highscore.textContent = "HighScore: ", formInput; ": ", count
+  console.log(localStorage)
 }
