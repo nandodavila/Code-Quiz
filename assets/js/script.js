@@ -157,19 +157,13 @@ function displayQuestions() {
 // adding event listener for all list items
 for (i = 0; i < answerChoices.length; i++) {
   answerChoices[i].addEventListener("click", function (event) {
-    console.log(event.target.textContent);
-    console.log(event.target.dataset);
     if (event.target.dataset.isAnswer === "true") {
       nxtBtn.dataset.isAnswerCorrect = true;
-      //add bs later
-      console.log("correct answer");
     } else {
       nxtBtn.dataset.isAnswerCorrect = false;
-      console.log("Wrong Answer");
     }
-
+    answerChoices.setAttribute("style", "color:green;");
     nxtBtn.hidden = false;
-    console.log(answeredQuestions)
   });
 }
 

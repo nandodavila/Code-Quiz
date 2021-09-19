@@ -68,10 +68,12 @@ aside {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-.make-hover:hover {
+.answer-choice:hover {
     background-color: lightgreen;
-
 }
+
+
+
 
 li {
     border: 2px solid green;
