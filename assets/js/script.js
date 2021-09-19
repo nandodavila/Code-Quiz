@@ -4,14 +4,16 @@ var nxtBtn = document.querySelector(".next-button");
 var answerChoices = document.querySelectorAll(".answer-choice");
 var timerElement = document.querySelector(".timer-count");
 var highscore = document.querySelector(".highscore");
-var form = document.querySelector(".highschore-form");
+var form = document.querySelector(".highscore-form");
 var formInput = document.querySelector("#initials")
+var submitForm =document.querySelector(".submit")
 
 
 
 var timer;
 var timerCount;
 var answeredQuestions = [];
+var displayedHighscores = [];
 
 var questions = [
   {
@@ -41,6 +43,37 @@ var questions = [
   }
 ]
 
+function getHighscore() {
+  var storedHighscore = localStorage.getItem("recentHighscore");
+  if (storedHighscore) {
+    displayedHighscores = JSON.parse(storedHighscore);
+  }
+}
+
+function setHighscore () {
+
+  localStorage.setItem("recentHighscore", JSON.stringify(displayedHighscores));
+}
+
+function displayHighscores() {
+  var clearDisplay = document.querySelectorAll(".list-score");
+  for (i = 0; i < clearDisplay.length; i++) {
+    clearDisplay[i].remove();
+  }
+  
+  if (displayedHighscores.length > 0) {
+    for (i = 0; i < displayedHighscores.length; i++) {
+      var listScore = document.createElement("li");
+      listScore.textContent = displayedHighscores[i].initials + ' ' + displayedHighscores[i].score;
+      listScore.className = "list-score";
+      document.body.appendChild(listScore);
+    }
+  }
+}
+
+getHighscore();
+displayHighscores();
+
 //timer count
 function startTimer() {
   timerCount = 50;
@@ -50,7 +83,7 @@ function startTimer() {
       timerElement.textContent = timerCount;
       if (timerCount >= 0) {
         if (timerCount > 0) {
-          getInitials();
+          
         }
       }
       if (timerCount <= 0) {
@@ -61,7 +94,7 @@ function startTimer() {
 }
 // checking if the answer is correct when next is pushed
 function checkQuestion() {
-  answeredQuestions.push(questionsTxt.textContent)
+  
   if (nxtBtn.dataset.isAnswerCorrect === "false") {
     console.log("question wrong");
     timerCount = timerCount -10;
@@ -84,10 +117,13 @@ nxtBtn.addEventListener("click", function(event) {
 });
 // displays questions in a random order checking if questions have already been asked
 function displayQuestions () {
+  
   console.log(answeredQuestions.length)
   console.log(questions.length)
-  if (answeredQuestions.length === questions.length) {
-    alert("Game Over");
+  if (answeredQuestions.length === questions.length && timerCount > 0) {
+    stopTimer();
+    alert("Quiz over, log your highscore!")
+    form.hidden = false;
     return;
   }
   var questionAnswered = true
@@ -100,6 +136,7 @@ function displayQuestions () {
   }
 
   questionsTxt.textContent = randomQuestion.question
+  answeredQuestions.push(randomQuestion.question)
 
   for (i = 0; i < answerChoices.length; i++) {
     answerChoices[i].textContent = randomQuestion.choices[i];
@@ -107,7 +144,6 @@ function displayQuestions () {
       answerChoices[i].dataset.isAnswer = true;
     } else answerChoices[i].dataset.isAnswer = false;
   }
-  getInitials();
 }
 
 // adding event listener for all list items
@@ -131,16 +167,30 @@ for (i = 0; i < answerChoices.length; i++) {
 
 function loseGame() {
   alert("Failed, please try again");
-  count = 0;
+  timerCount = 0;
   startBtn.setAttribute("style", "display: inline")
 }
 
 function getInitials() {
-  if (count > 0) {
-    localStorage.setItem("count", count);
-  }  
-  form.hidden = false;
-  localStorage.setItem("recentHighscore", formInput)
-  highscore.textContent = "HighScore: ", formInput; ": ", count
-  console.log(localStorage)
+  var newHighscore = {
+    initials: formInput.value,
+    score: timerCount,
+  };
+
+  displayedHighscores.push(newHighscore);
+  setHighscore();
+  displayHighscores();
+  }
+
+
+
+submitForm.addEventListener('submit', function(event) {
+event.preventDefault();
+getInitials();
+})
+
+function stopTimer() {
+  clearInterval(timer);
+
 }
+
