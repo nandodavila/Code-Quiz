@@ -130,7 +130,8 @@ function displayQuestions() {
     alert("Quiz over, log your highscore!")
     form.hidden = false;
     startBtn.setAttribute("style", "display: inline")
-    
+    answeredQuestions.splice(0, 5, "");
+    console.log(answeredQuestions)
     return;
   }
   var questionAnswered = true
