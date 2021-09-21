@@ -162,7 +162,6 @@ for (i = 0; i < answerChoices.length; i++) {
     } else {
       nxtBtn.dataset.isAnswerCorrect = false;
     }
-    answerChoices.setAttribute("style", "color:green;");
     nxtBtn.hidden = false;
   });
 }
